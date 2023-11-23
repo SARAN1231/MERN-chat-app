@@ -57,7 +57,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setMessages(data);
       setLoading(false);
 
-      // socket.emit("join chat", selectedChat._id);
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -89,7 +89,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        // socket.emit("new message", data);
+        socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -117,25 +117,25 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     fetchMessages();
 
-    // selectedChatCompare = selectedChat;
+   selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
 
-  // useEffect(() => {
-  //   socket.on("message recieved", (newMessageRecieved) => {
-  //     if (
-  //       !selectedChatCompare || // if chat is not selected or doesn't match current chat
-  //       selectedChatCompare._id !== newMessageRecieved.chat._id
-  //     ) {
-  //       if (!notification.includes(newMessageRecieved)) {
-  //         setNotification([newMessageRecieved, ...notification]);
-  //         setFetchAgain(!fetchAgain);
-  //       }
-  //     } else {
-  //       setMessages([...messages, newMessageRecieved]);
-  //     }
-  //   });
-  // });
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        if (!notification.includes(newMessageRecieved)) {
+          setNotification([newMessageRecieved, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
 
   // const typingHandler = (e) => {
   //   setNewMessage(e.target.value);
@@ -197,7 +197,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ))}
           </Text>
           <Box
-            ddisplay="flex"
+            display="flex"
             flexDir="column"
             justifyContent="flex-end"
             p={3}
@@ -225,7 +225,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               onKeyDown={sendMessage}
               id="first-name"
               isRequired
-              mt={3}
+              mb={3}
             >
               {/* {istyping ? (
                 <div>
@@ -252,7 +252,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       ) : (
         // to get socket.io on same page
         <Box
-          ddisplay="flex"
+          display="flex"
           alignItems="center"
           justifyContent="center"
           h="100%"
