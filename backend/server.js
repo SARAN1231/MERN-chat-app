@@ -1,5 +1,5 @@
 const express = require("express");
-const http = require("http"); // Add this line to import the http module
+const http = require("http"); 
 const dotenv = require("dotenv");
 const { chats } = require("./data/data");
 const connectDB = require("./config/db");
